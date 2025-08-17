@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kirovsk AutoStudio</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #000; color: #fff; margin: 0; }
+    header { background: #111; padding: 20px; text-align: center; }
+    header img { height: 80px; }
+    nav { background: #222; display: flex; justify-content: center; }
+    nav a { color: white; padding: 14px 20px; text-decoration: none; }
+    nav a:hover { background: #cc0000; }
+    section { padding: 40px 20px; max-width: 1000px; margin: auto; }
+    h2 { color: #cc0000; text-align: center; }
+    .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+    .portfolio-grid img { width: 100%; border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; background: #1c1c1c; margin-top: 20px; }
+    th, td { border: 1px solid #444; padding: 12px; }
+    th { background: #cc0000; color: #fff; }
+    form { background: #1c1c1c; padding: 20px; border-radius: 8px; }
+    label { display: block; margin-top: 16px; }
+    input, select { width: 100%; padding: 10px; background: #333; color: #fff; border: none; border-radius: 4px; }
+    button { margin-top: 20px; width: 100%; padding: 12px; background: #cc0000; color: #fff; border: none; font-size: 1em; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #a80000; }
+    footer { text-align: center; padding: 20px; background: #111; color: #888; margin-top: 40px; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="images/logo.jpeg" alt="Kirovsk AutoStudio" />
+  </header>
+  <nav>
+    <a href="#portfolio">Портфолио</a>
+    <a href="#prices">Прейскурант</a>
+    <a href="#booking">Запись</a>
+  </nav>
+
+  <section id="portfolio">
+    <h2>Наше портфолио</h2>
+    <div class="portfolio-grid">
+      <img src="images/before_after.jpg" alt="До и после" />
+      <img src="images/body_polish.jpg" alt="Полировка кузова" />
+      <img src="images/headlight_polish.jpg" alt="Полировка фар" />
+      <img src="images/interior_clean.jpg" alt="Чистка салона" />
+    </div>
+  </section>
+
+  <section id="prices">
+    <h2>Прейскурант</h2>
+    <table>
+      <tr><th>Услуга</th><th>Цена</th></tr>
+      <tr><td>Комплексная мойка</td><td>от 1000 ₽</td></tr>
+      <tr><td>Полировка кузова</td><td>от 5000 ₽</td></tr>
+      <tr><td>Химчистка салона</td><td>от 4000 ₽</td></tr>
+      <tr><td>Нанесение керамики</td><td>от 9000 ₽</td></tr>
+      <tr><td>Полировка фар</td><td>от 1200 ₽</td></tr>
+    </table>
+  </section>
+
+  <section id="booking">
+    <h2>Онлайн-запись</h2>
+    <form id="booking-form" onsubmit="redirectToWhatsApp(event)">
+      <label for="name">Имя</label>
+      <input type="text" id="name" required />
+      <label for="phone">Телефон</label>
+      <input type="tel" id="phone" required />
+      <label for="service">Услуга</label>
+      <select id="service" required>
+        <option disabled selected value="">Выберите услугу</option>
+        <option>Комплексная мойка</option>
+        <option>Полировка кузова</option>
+        <option>Химчистка салона</option>
+        <option>Нанесение керамики</option>
+        <option>Полировка фар</option>
+      </select>
+      <label for="car">Автомобиль</label>
+      <input type="text" id="car" required />
+      <button type="submit">Записаться в WhatsApp</button>
+    </form>
+  </section>
+
+  <footer>© 2025 Kirovsk AutoStudio. Все права защищены.</footer>
+
+  <script>
+    function redirectToWhatsApp(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const service = document.getElementById('service').value;
+      const car = document.getElementById('car').value;
+
+      const message = `Здравствуйте! Хочу записаться на услугу:%0AИмя: ${name}%0AТелефон: ${phone}%0AУслуга: ${service}%0AАвтомобиль: ${car}`;
+      const whatsappURL = `https://wa.me/79116434018?text=${message}`;
+
+      window.open(whatsappURL, '_blank');
+    }
+  </script>
+</body>
+</html>
