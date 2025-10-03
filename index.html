@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Kirovsk AutoStudio</title>
   <style>
+    #contacts {
+  background: #1c1c1c;
+  padding: 40px 20px;
+  margin-top: 40px;
+  border-radius: 8px;
+}
+#contacts h2 {
+  color: #cc0000;
+  margin-bottom: 20px;
+}
+#contacts p {
+  margin: 8px 0;
+}
     body { font-family: Arial, sans-serif; background: #000; color: #fff; margin: 0; }
     header { background: #111; padding: 20px; text-align: center; }
     header img { height: 80px; }
@@ -138,6 +151,20 @@
       <input type="text" id="car" required />
       <button type="submit">Записаться</button>
     </form>
+  </section>
+    <section id="contacts">
+    <h2>Контакты</h2>
+    <div style="text-align: center; margin-bottom: 20px;">
+      <p><strong>Телефон:</strong> <a href="tel:+79650895611" style="color:#cc0000;">+7 (965) 089-56-11</a></p>
+      <p><strong>Адрес:</strong> г. Кировск, ул. Ладожская, 9Б</p>
+    </div>
+    <div style="width:100%; height:400px;">
+      <!-- Вставка карты Google -->
+      <iframe 
+        src="https://yandex.ru/maps/org/d_studio/222168144215?si=ug2wbk6xpk5ktez5kzy538qehg"
+        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+      </iframe>
+    </div>
   </section>
 
   <footer>© 2014 - 2025 DStudio Kirovsk. Все права защищены. Не является публичной офертой. </footer>
