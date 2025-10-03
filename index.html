@@ -29,11 +29,10 @@
 .carousel-track img {
   width: 100%;
   flex: 0 0 100%;
-  height: auto;         /* авто-высота */
-  max-height: 600px;    /* ограничение по высоте */
-  object-fit: contain;  /* помещаем без обрезки */
+  height: 500px;        /* одинаковая высота для всех слайдов */
+  object-fit: cover;    /* заполнение с обрезкой */
+  object-position: center; /* всегда по центру */
   display: block;
-  margin: 0 auto;
 }
 }
 
