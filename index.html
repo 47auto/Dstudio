@@ -5,48 +5,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Kirovsk AutoStudio</title>
   <style>
-    #portfolio {
-  margin: 40px 0;
-  text-align: center;
-}
+   /* ---------- Карусель (заменяет старые стили портфолио) ---------- */
+#portfolio { margin: 40px 0; }
+#portfolio h2 { color: #cc0000; text-align: center; margin-bottom: 18px; }
+
+/* контейнер карусели */
 .carousel {
   position: relative;
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 1000px;
+  margin: 0 auto;            /* по центру страницы */
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
+
+/* дорожка со слайдами */
 .carousel-track {
   display: flex;
   transition: transform 0.5s ease-in-out;
+  will-change: transform;
 }
+
+/* каждый слайд (картинка) занимает 100% ширины слайдера */
 .carousel-track img {
-  min-width: 100%;
-  height: 400px;
-  object-fit: cover;
+  width: 100%;
+  flex: 0 0 100%;
+  height: clamp(300px, 45vh, 600px); /* адаптивная высота */
+  object-fit: cover; /* заполнение без искажений */
+  display: block;
 }
-.carousel-btn {
+
+/* кнопки навигации — специфика для .carousel-btn, чтобы переопределить глобальные правила */
+button.carousel-btn {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.6);
-  color: #fff;
   border: none;
-  font-size: 30px;
-  padding: 10px 15px;
-  cursor: pointer;
+  outline: none;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
   border-radius: 50%;
-  transition: background 0.3s;
+  z-index: 10;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.12s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  font-size: 22px;
 }
-.carousel-btn:hover {
-  background: rgba(204,0,0,0.9);
+
+/* конкретные позиции */
+button.carousel-btn.prev { left: 12px; }
+button.carousel-btn.next { right: 12px; }
+
+button.carousel-btn:hover {
+  background: rgba(204,0,0,0.95);
+  transform: translateY(-50%) scale(1.05);
 }
-.carousel-btn.prev {
-  left: 10px;
-}
-.carousel-btn.next {
-  right: 10px;
+
+/* чтобы внутренняя стрелка svg не блокировала клик */
+button.carousel-btn svg { pointer-events: none; }
+
+/* маленькие устройства — чуть поменьше кнопки и высота картинок */
+@media (max-width: 600px) {
+  button.carousel-btn { width: 44px; height: 44px; font-size: 20px; }
+  .carousel-track img { height: 55vh; }
 }
     #contacts {
   background: #1c1c1c;
@@ -149,8 +176,14 @@
 
  <section id="portfolio">
   <h2>Наши работы</h2>
-  <div class="carousel">
-    <button class="carousel-btn prev">❮</button>
+  <div class="carousel" aria-label="Портфолио">
+    <button class="carousel-btn prev" aria-label="Предыдущий слайд">
+      <!-- можно оставить символы или вставить svg -->
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
+      </svg>
+    </button>
+
     <div class="carousel-track">
       <img src="photo1.jpg" alt="Оклейка кузова" />
       <img src="photo2.jpg" alt="Полировка кузова" />
@@ -159,7 +192,12 @@
       <img src="kuzov.jpg" alt="Шумо-виброизоляция" />
       <img src="fara.jpg" alt="Полировка оптики" />  
     </div>
-    <button class="carousel-btn next">❯</button>
+
+    <button class="carousel-btn next" aria-label="Следующий слайд">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+      </svg>
+    </button>
   </div>
 </section>
 
@@ -246,31 +284,71 @@
   }
 </script>
   <script>
+document.addEventListener('DOMContentLoaded', function () {
   const track = document.querySelector('.carousel-track');
-  const slides = Array.from(track.children);
+  const slides = Array.from(track.querySelectorAll('img'));
   const nextButton = document.querySelector('.carousel-btn.next');
   const prevButton = document.querySelector('.carousel-btn.prev');
+  const carousel = document.querySelector('.carousel');
+
+  if (!track || slides.length === 0) return;
+
   let currentIndex = 0;
+  const slideCount = slides.length;
+  const AUTOPLAY_DELAY = 4000;
+  let timer = null;
 
   function updateCarousel() {
     track.style.transform = `translateX(-${currentIndex * 100}%)`;
   }
 
-  nextButton.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % slides.length;
+  function nextSlide() {
+    currentIndex = (currentIndex + 1) % slideCount;
     updateCarousel();
+  }
+
+  function prevSlide() {
+    currentIndex = (currentIndex - 1 + slideCount) % slideCount;
+    updateCarousel();
+  }
+
+  // Навешиваем события
+  nextButton.addEventListener('click', function () {
+    stopAuto();
+    nextSlide();
+    startAuto();
   });
 
-  prevButton.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-    updateCarousel();
+  prevButton.addEventListener('click', function () {
+    stopAuto();
+    prevSlide();
+    startAuto();
   });
 
-  // автопрокрутка каждые 4 секунды
-  setInterval(() => {
-    currentIndex = (currentIndex + 1) % slides.length;
-    updateCarousel();
-  }, 4000);
+  // Клавиши стрелок
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { nextButton.click(); }
+    if (e.key === 'ArrowLeft') { prevButton.click(); }
+  });
+
+  // Автопрокрутка с паузой при наведении
+  function startAuto() {
+    stopAuto();
+    timer = setInterval(nextSlide, AUTOPLAY_DELAY);
+  }
+  function stopAuto() {
+    if (timer) { clearInterval(timer); timer = null; }
+  }
+  carousel.addEventListener('mouseenter', stopAuto);
+  carousel.addEventListener('mouseleave', startAuto);
+
+  // Инициализация
+  updateCarousel();
+  startAuto();
+
+  // На случай изменения размера — принудительно обновим позицию
+  window.addEventListener('resize', updateCarousel);
+});
 </script>
 </body>
 </html>
