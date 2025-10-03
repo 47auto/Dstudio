@@ -183,5 +183,18 @@
       window.open(whatsappURL, '_blank');
     }
   </script>
+  <script>
+  // При загрузке страницы сбрасываем скролл
+  window.addEventListener("load", function() {
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
+  });
+
+  // На случай перезагрузки / F5
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+</script>
 </body>
 </html>
