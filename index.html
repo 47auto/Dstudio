@@ -26,14 +26,13 @@
   will-change: transform;
 }
 
+/* каждый слайд (картинка) занимает 100% ширины слайдера */
 .carousel-track img {
   width: 100%;
   flex: 0 0 100%;
-  height: 500px;        /* одинаковая высота для всех слайдов */
-  object-fit: cover;    /* заполнение с обрезкой */
-  object-position: center; /* всегда по центру */
+  height: clamp(300px, 45vh, 600px); /* адаптивная высота */
+  object-fit: cover; /* заполнение без искажений */
   display: block;
-}
 }
 
 /* кнопки навигации — специфика для .carousel-btn, чтобы переопределить глобальные правила */
