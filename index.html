@@ -25,7 +25,9 @@
     button:hover { background: #a80000; }
     footer { text-align: center; padding: 20px; background: #111; color: #888; margin-top: 40px; }
         #toTopBtn {
-  display: none; /* скрыта по умолчанию */
+  display: none; /* по умолчанию скрыта */
+  justify-content: center;
+  align-items: center;
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -35,21 +37,28 @@
   border: none;
   outline: none;
   background-color: #cc0000;
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.2s;
 }
+
 #toTopBtn:hover {
   background-color: #a80000;
+  transform: scale(1.1);
+}
+
+#toTopBtn svg {
+  pointer-events: none; /* чтобы клик шел по кнопке */
 }
   </style>
 </head>
-    <!-- Кнопка "Наверх" -->
-  <button id="toTopBtn" title="Наверх">↑</button>
+     <!-- Кнопка "Наверх" -->
+  <button id="toTopBtn" title="Наверх">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+      <path d="M12 4l-8 8h6v8h4v-8h6z"/>
+    </svg>
+  </button>
 
   <script>
     // показываем кнопку при скролле вниз
@@ -58,7 +67,7 @@
     function scrollFunction() {
       const btn = document.getElementById("toTopBtn");
       if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-        btn.style.display = "block";
+        btn.style.display = "flex";
       } else {
         btn.style.display = "none";
       }
